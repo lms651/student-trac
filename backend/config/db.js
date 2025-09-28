@@ -14,6 +14,6 @@ const connectDB = async () => {
     logger.error("DB connection failed:", err.message);
     process.exit(1);
   }
-};
+}
 
 export default connectDB;
