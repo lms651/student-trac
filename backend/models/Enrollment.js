@@ -27,16 +27,16 @@ const enrollmentSchema = new mongoose.Schema({
   timestamps: true
 })
 
-// Custom validator to prevent duplicate student-course pairs
-enrollmentSchema.path("courses").validate(function (courses) {
-  const seen = new Set();
-  for (const c of courses) {
-    const key = `${c.student}_${c.course}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-  }
-  return true;
-}, "Duplicate course enrollment is not allowed.");
+  // Custom validator to prevent duplicate student-course pairs
+  enrollmentSchema.path("courses").validate(function (courses) {
+    const seen = new Set();
+    for (const c of courses) {
+      const key = `${c.student}_${c.course}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+    }
+    return true;
+  }, "Duplicate course enrollment is not allowed.");
 
 const Enrollment = mongoose.model("Enrollment", enrollmentSchema);
 export default Enrollment;

@@ -286,7 +286,6 @@ describe("Enrollment Model", () => {
 
         expect(error).toBeDefined();
         expect(error.errors.courses.message).toBe("Duplicate course enrollment is not allowed.");
-
     })
 })
 
