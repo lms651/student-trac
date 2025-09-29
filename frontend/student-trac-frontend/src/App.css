@@ -1,0 +1,61 @@
+body {
+  background-color: whitesmoke;
+  font-family: "PT Sans Caption", sans-serif;
+}
+
+header {
+  display: flex;
+  background-color: white;
+  gap: 2px;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: solid rgb(205, 200, 200);
+}
+
+.logo {
+  margin-left: 10px;
+  width: 50px;
+  height: 50px;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 23px;
+  line-height: 50px;
+  letter-spacing: -1px;
+  color: #3a3a39;
+}
+
+h1 {
+    color: #3a3a39;
+}
+
+main {
+  display: flex;           /* enables flexbox */
+  justify-content: center; /* horizontal centering */
+  flex-direction: column;
+  align-items: center;     /* vertical centering */
+  text-align: center;      /* optional, centers text inside elements */
+}
+
+.create-profile-section form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* keeps labels/inputs centered */
+  gap: 15px;            /* space between form fields */
+  margin-bottom: 10px;
+}
+
+.create-profile-section input,
+.create-profile-section select {
+  width: 250px;         /* optional, make inputs uniform */
+  padding: 8px;
+}
+
+.create-profile-section {
+  display: flex;           /* enables flexbox */
+  justify-content: center; /* horizontal centering */
+  flex-direction: column;
+  align-items: center;     /* vertical centering */
+  text-align: center;      /* optional, centers text inside elements */
+}
