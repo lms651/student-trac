@@ -1,23 +1,116 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 export default function EditInfo() {
+    const navigate = useNavigate();
+    const { studentId } = useParams();
+
+    const [profile, setProfile] = React.useState(null);
+    const [enrollments, setEnrollments] = React.useState([]);
+
+    React.useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+            const res = await fetch(`http://localhost:4000/students/${studentId}`);
+            const data = await res.json();
+            setProfile(data);
+            } catch (err) {
+            console.error(err);
+            }
+        };
+
+        const fetchEnrollments = async () => {
+            try {
+            const res = await fetch(`http://localhost:4000/enrollments/${studentId}`);
+            if (res.ok) {
+                const data = await res.json();
+                setEnrollments(data);
+            }
+            } catch (err) {
+            console.error(err);
+            }
+        };
+
+        fetchProfile();
+        fetchEnrollments();
+    }, [studentId]);
+
+    const handleChange = (e) => {
+        setProfile({ ...profile, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await fetch(`http://localhost:4000/students/${studentId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(profile)
+            });
+
+            if (!res.ok) throw new Error("Failed to update profile");
+        
+            toastr.success("Profile updated!", "Success");
+            navigate(`/profile/${studentId}`); // redirect to the profile view page on submit
+
+        } catch (err) {
+            toastr.error("Could not update profile. Try again.", "Error");
+        }
+    }
+
     return (
         <div className="edit-info-section">
             <h1>Edit Information</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <label htmlFor="firstName">First Name:</label>
-                <input id="first-name" type="text" name="firstName" maxLength={255} placeholder="Sally" required/>
+                <input id="first-name" type="text" name="firstName" maxLength={255} placeholder="Sally" value={profile?.firstName || ""} onChange={handleChange} required/>
 
                 <label htmlFor="middleName">Middle Name:</label>
-                <input id="middle-name" type="text" name="middleName" maxLength={255} placeholder="Marie"/>
+                <input id="middle-name" type="text" name="middleName" maxLength={255} placeholder="Marie" value={profile?.middleName || ""} onChange={handleChange}/>
 
                 <label htmlFor="lastName">Last Name:</label>
-                <input id="last-name" type="text" name="lastName" maxLength={255} placeholder="Student" required/>
+                <input id="last-name" type="text" name="lastName" maxLength={255} placeholder="Student" value={profile?.lastName || ""} onChange={handleChange} required/>
 
                 <label htmlFor="publicStudentId">Student ID:</label>
-                <input id="student-name" type="text" name="publicStudentId" maxLength={8} placeholder="U7711624" required/>
+                <input id="student-name" type="text" name="publicStudentId" maxLength={8} placeholder="U7711624" value={profile?.publicStudentId || ""} onChange={handleChange} required/>
 
                 <button type="submit">Save</button>
             </form>
-                <button>Cancel</button>
+                
+            <div id="edit-my-courses-table">
+            Edit My Enrollments
+            {enrollments.length === 0 ? (
+                <p>No enrollments yet</p>
+            ) : (
+                <table>
+                <thead>
+                    <tr>
+                    <th>Course ID</th>
+                    <th>Name</th>
+                    <th>Semester</th>
+                    <th>Year</th>
+                    <th>GPA</th>
+                    <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {enrollments.map((e) => (
+                    <tr key={e._id}>
+                        <td>{e.course.publicCourseId}</td>
+                        <td>{e.course.courseName}</td>
+                        <td>{e.course.semester}</td>
+                        <td>{e.course.year}</td>
+                        <td>{e.GPA}</td>
+                        <td><button>X</button></td>
+                    </tr>
+                    ))}
+                </tbody>
+                </table>
+            )}
+            </div>
+                <button>Add Courses</button>
+                <button type="button" onClick={() => navigate(`/profile/${studentId}`)}>Cancel</button>
         </div> 
     )
 }

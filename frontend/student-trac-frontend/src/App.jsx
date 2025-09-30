@@ -18,7 +18,7 @@ function App() {
 
         {/* Profile Pages */}
         <Route path="/profile/:studentId" element={<ViewProfile />} />
-        <Route path="/profile/edit" element={<EditInfo />} />
+        <Route path="/edit/:studentId" element={<EditInfo />} />
 
         {/* Courses */}
         <Route path="/courses" element={<ViewCourses />} />

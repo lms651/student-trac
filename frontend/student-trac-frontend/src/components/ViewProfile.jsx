@@ -1,11 +1,10 @@
 import React from "react"
 import { useParams } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 export default function ViewProfile() {
-
     const { studentId } = useParams();
-
+    const navigate = useNavigate();
 
     const [profile, setProfile] = React.useState(null);
     const [enrollments, setEnrollments] = React.useState([]);
@@ -74,8 +73,7 @@ export default function ViewProfile() {
             </table>
             )}
         </div>
-                <button>Edit Info</button> 
-                <button>Add Courses</button>
+                <button type="button" onClick={() => navigate(`/edit/${studentId}`)}>Edit Profile</button> 
                 <button>Delete Profile</button> 
         </div> 
     )
