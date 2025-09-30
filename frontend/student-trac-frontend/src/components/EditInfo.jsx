@@ -1,7 +1,7 @@
-export default function CreateProfile() {
+export default function EditInfo() {
     return (
-        <div className="create-profile-section">
-            <h1>Create Profile</h1>
+        <div className="edit-info-section">
+            <h1>Edit Information</h1>
             <form>
                 <label htmlFor="firstName">First Name:</label>
                 <input id="first-name" type="text" name="firstName" maxLength={255} placeholder="Sally" required/>
@@ -17,7 +17,7 @@ export default function CreateProfile() {
 
                 <button type="submit">Save</button>
             </form>
-                <button>Cancel</button> 
+                <button>Cancel</button>
         </div> 
     )
 }
