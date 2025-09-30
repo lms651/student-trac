@@ -2,7 +2,8 @@ import express from "express";
 import connectDB from "./config/db.js";
 import logger from "./config/logger.js";
 import studentRoutes from './routes/studentProfileRoutes.js';
-import courseRoutes from './routes/courseRoutes.js'
+import courseRoutes from './routes/courseRoutes.js';
+import enrollmentRoutes from './routes/enrollmentRoutes.js';
 import cors from "cors";
 
 const app = express();
@@ -14,6 +15,8 @@ connectDB();
 
 app.use('/students', studentRoutes);
 app.use('/courses', courseRoutes);
+app.use('/enrollments', enrollmentRoutes);
+
 
 app.get("/", (req, res) => {
   res.send("API is running woooo");

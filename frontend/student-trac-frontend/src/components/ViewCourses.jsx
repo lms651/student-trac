@@ -1,20 +1,13 @@
-// export default function ViewCourses() {
-//     return (
-//         <div className="view-courses-section">
-//             <h1>Available Courses</h1>
-
-//             <div className="all-course-display">All Courses
-//                 <p>This will be a table that has all the info from the database and an 'add' button for the row</p>
-//             </div>
-//                 <button>Back</button> 
-//         </div> 
-//     )
-// }
-
 import React from "react";
-//add prop onAddCourse
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 export default function AllCourses() {
-  const [courses, setCourses] = React.useState([]);
+    const navigate = useNavigate();
+    const { studentId } = useParams();
+    
+    
+    const [courses, setCourses] = React.useState([]);
 
   React.useEffect(() => {
     const fetchCourses = async () => {
@@ -32,6 +25,30 @@ export default function AllCourses() {
     fetchCourses();
   }, []);
 
+  const handleAddCourse = async (courseId) => {
+  try {
+    const res = await fetch(`http://localhost:4000/enrollments/${studentId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ courseId }),
+    });
+
+    if (!res.ok) {
+      const errData = await res.json();
+      throw new Error(errData.error || "Failed to enroll");
+    }
+
+    toastr.success("Course added!", "Success");
+
+    // go back to student profile
+    navigate(`/profile/${studentId}`);
+
+  } catch (err) {
+    console.error(err);
+    toastr.error(err.message, "Error");
+  }
+};
+
   return (
     <div className="all-courses-section">
       <h2>All Courses</h2>
@@ -44,7 +61,7 @@ export default function AllCourses() {
           <thead>
             <tr>
               <th>Course ID</th>
-              <th>Name</th>
+              <th>Course Name</th>
               <th>Semester</th>
               <th>Year</th>
               <th>Add</th>
@@ -60,7 +77,7 @@ export default function AllCourses() {
                 <td>
                   <button 
                     style={{ backgroundColor: "green", color: "white" }} 
-                    // onClick={() => onAddCourse(course)}
+                    onClick={() => handleAddCourse(course._id)} 
                   >+</button>
                 </td>
               </tr>

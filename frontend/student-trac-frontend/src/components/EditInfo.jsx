@@ -109,7 +109,7 @@ export default function EditInfo() {
                 </table>
             )}
             </div>
-                <button type="button" onClick={()=> navigate(`/courses`)}>Add Courses</button>
+                <button type="button" onClick={()=> navigate(`/profile/${studentId}/courses`)}>Add Courses</button>
                 <button type="button" onClick={() => navigate(`/profile/${studentId}`)}>Cancel</button>
         </div> 
     )

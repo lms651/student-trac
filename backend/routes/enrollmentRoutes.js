@@ -68,3 +68,5 @@ router.delete('/:studentId/:courseId', async (req, res) => {
     res.status(400).json({ error: err.message });
     }
 })
+
+export default router;

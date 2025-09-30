@@ -65,11 +65,11 @@ export default function ViewProfile() {
     return (
         <div className="view-profile-section">
             <h1>My Profile</h1>
-            <div>My Information:
+            <div><b>My Information:</b>
                 <p>{profile ? `${profile.firstName} ${profile.middleName} ${profile.lastName}` : "Loading..."}</p>
-                <p>  Student ID: {profile ? profile.publicStudentId : "Loading..."}</p>
+                <p><b>Student ID:</b> {profile ? profile.publicStudentId : "Loading..."}</p>
             </div>
-            <div className="my-course-display">My Enrollments:
+            <div className="my-course-display"><b>My Enrollments:</b>
         {enrollments.length === 0 ? (
           <p>No enrollments yet</p>
             ) : (
@@ -77,7 +77,7 @@ export default function ViewProfile() {
                 <thead>
                 <tr>
                     <th>Course ID</th>
-                    <th>Name</th>
+                    <th>Course Name</th>
                     <th>Semester</th>
                     <th>Year</th>
                     <th>GPA</th>

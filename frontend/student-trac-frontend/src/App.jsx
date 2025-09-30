@@ -21,7 +21,7 @@ function App() {
         <Route path="/edit/:studentId" element={<EditInfo />} />
 
         {/* Courses */}
-        <Route path="/courses" element={<ViewCourses />} />
+        <Route path="/profile/:studentId/courses" element={<ViewCourses />} />
 
         {/* Catch-all → redirect to home */}
         <Route path="*" element={<Navigate to="/" />} />
