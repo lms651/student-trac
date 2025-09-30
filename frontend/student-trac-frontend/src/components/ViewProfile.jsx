@@ -8,6 +8,8 @@ export default function ViewProfile() {
 
     const [profile, setProfile] = React.useState(null);
     const [enrollments, setEnrollments] = React.useState([]);
+    const [deleteWarned, setDeleteWarned] = React.useState(false);
+
 
   React.useEffect(() => {
     // Fetch student profile
@@ -37,6 +39,28 @@ export default function ViewProfile() {
     fetchProfile();
     fetchEnrollments();
   }, [studentId]);
+
+  const handleDelete = async () => {
+    if (!deleteWarned) {
+      toastr.warning("Click Delete Profile again to confirm deletion", "Warning");
+      setDeleteWarned(true);
+      return;
+    }
+
+    try {
+      const res = await fetch(`http://localhost:4000/students/${studentId}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Failed to delete profile");
+
+      toastr.success("Profile deleted!", "Success");
+      navigate("/"); // back to landing page
+    } catch (err) {
+      toastr.error("Could not delete profile. Try again.", "Error");
+      console.error(err);
+    }
+  };
 
     return (
         <div className="view-profile-section">
@@ -74,7 +98,7 @@ export default function ViewProfile() {
             )}
         </div>
                 <button type="button" onClick={() => navigate(`/edit/${studentId}`)}>Edit Profile</button> 
-                <button>Delete Profile</button> 
+                <button type="button" onClick={handleDelete}>Delete Profile</button> 
         </div> 
     )
 }

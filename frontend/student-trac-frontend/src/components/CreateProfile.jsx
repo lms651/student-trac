@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+
 export default function CreateProfile() {
     const navigate = useNavigate();
-
+    
     const [formData, setFormData] = useState({
         firstName: "",
         middleName: "",
@@ -32,7 +33,7 @@ export default function CreateProfile() {
 
             const profile = await response.json();
             toastr.success("Profile Created!", "Success");
-            navigate("/profile"); // redirect to the profile view page on submit
+            navigate(`/profile/${profile._id}`); // <-- use profile._id, not studentId
 
         } catch (err) {
             toastr.error("Could not create profile. Please try again.", "Error");
