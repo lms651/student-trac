@@ -33,7 +33,7 @@ export default function CreateProfile() {
 
             const profile = await response.json();
             toastr.success("Profile Created!", "Success");
-            navigate(`/profile/${profile._id}`); // <-- use profile._id, not studentId
+            navigate(`/profile/${profile._id}`);
 
         } catch (err) {
             toastr.error("Could not create profile. Please try again.", "Error");
