@@ -3,8 +3,10 @@ import connectDB from "./config/db.js";
 import logger from "./config/logger.js";
 import studentRoutes from './routes/studentProfileRoutes.js';
 import courseRoutes from './routes/courseRoutes.js'
+import cors from "cors";
 
 const app = express();
+app.use(cors({ origin: "http://localhost:5173" })); 
 app.use(express.json());
 
 // Connect to MongoDB
