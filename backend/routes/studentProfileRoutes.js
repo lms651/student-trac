@@ -3,6 +3,13 @@ import StudentProfile from '../models/StudentProfile.js';
 
 const router = express.Router();
 
+/**
+ * Creates a new student profile.
+ * 
+ * @scope public
+ * @param {Object} req.body - Student profile data (firstName, middleName, lastName, publicStudentId)
+ * @returns {Object} The newly created student profile
+ */
 router.post('/', async (req, res) => {
     try {
         const profile = await StudentProfile.create(req.body);
@@ -12,6 +19,13 @@ router.post('/', async (req, res) => {
     }
 })
 
+/**
+ * Retrieves a student profile by ID.
+ * 
+ * @scope public
+ * @param {string} req.params.id - ID of the student profile
+ * @returns {Object} The student profile if found
+ */
 router.get('/:id', async (req, res) => {
     try {
         const profile = await StudentProfile.findById(req.params.id);
@@ -22,6 +36,14 @@ router.get('/:id', async (req, res) => {
     }
 })
 
+/**
+ * Updates a student profile by ID.
+ * 
+ * @scope public
+ * @param {string} req.params.id - ID of the student profile
+ * @param {Object} req.body - Updated student profile data
+ * @returns {Object} The updated student profile
+ */
 router.put('/:id', async (req, res) => {
     try {
         const profile = await StudentProfile.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
@@ -31,6 +53,13 @@ router.put('/:id', async (req, res) => {
     }
 })
 
+/**
+ * Soft deletes a student profile by ID.
+ * 
+ * @scope public
+ * @param {string} req.params.id - ID of the student profile
+ * @returns {Object} The updated student profile with isDeleted timestamp
+ */
 router.delete('/:id', async (req, res) => {
     try {
         const profile = await StudentProfile.findByIdAndUpdate(

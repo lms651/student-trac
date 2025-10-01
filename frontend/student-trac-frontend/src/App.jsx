@@ -12,7 +12,7 @@ function App() {
     <BrowserRouter>
       <Header />
       <Routes>
-        {/* Landing or Create Profile */}
+        {/* Landing/Create Profile Prompt */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/create-profile" element={<CreateProfile />} />
 
@@ -23,7 +23,7 @@ function App() {
         {/* Courses */}
         <Route path="/profile/:studentId/courses" element={<ViewCourses />} />
 
-        {/* Catch-all → redirect to home */}
+        {/* Catch-all/redirect home */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>

@@ -3,7 +3,13 @@ import Enrollment from '../models/Enrollment.js'
 
 const router = express.Router();
 
-// returns all enrollments for a particular student
+/**
+ * Gets all course enrollments for a student.
+ * 
+ * @scope public
+ * @param {string} req.params.studentId - ID of the student
+ * @returns {Array} List of the student's enrolled courses
+ */
 router.get('/:studentId', async (req, res) => {
     try {
         const enrollment = await Enrollment.findOne({ 'courses.student': req.params.studentId })
@@ -16,7 +22,14 @@ router.get('/:studentId', async (req, res) => {
     }
 })
 
-// add one course to enrollment 
+/**
+ * Adds a course enrollment for a student.
+ * 
+ * @scope public
+ * @param {string} req.params.studentId - ID of the student
+ * @param {string} req.body.courseId - ID of the course to enroll
+ * @returns {Object} The updated or newly created enrollment
+ */
 router.post('/:studentId', async (req, res) => {
     try {
         const { studentId } = req.params;
@@ -24,7 +37,7 @@ router.post('/:studentId', async (req, res) => {
 
         const enrollment = await Enrollment.findOne({ "courses.student": studentId });
         
-        // First course for this student
+        // Student's first course
         if (!enrollment) {
             const newEnrollment = await Enrollment.create({
                 courses: [{ student: studentId, course: courseId, dateEnrolled: new Date() }]
@@ -32,7 +45,7 @@ router.post('/:studentId', async (req, res) => {
         return res.status(201).json(newEnrollment);
         }
 
-        // Check for duplicates (your validator will catch it too)
+        // Check for duplicates
         if (enrollment.courses.some(course => course.course.toString() === courseId)) {
             return res.status(400).json({ error: "Student is already enrolled in this course" });
         }
@@ -45,7 +58,14 @@ router.post('/:studentId', async (req, res) => {
   }
 })
 
-// remove one course from enrollment
+/**
+ * Removes a course from a student's enrollment.
+ * 
+ * @scope public
+ * @param {string} req.params.studentId - ID of the student
+ * @param {string} req.params.courseId - ID of the course to remove
+ * @returns {Object} Updated enrollment with a success message
+ */
 router.delete('/:studentId/:courseId', async (req, res) => {
     try {
         const { studentId, courseId } = req.params;
@@ -69,7 +89,15 @@ router.delete('/:studentId/:courseId', async (req, res) => {
     }
 })
 
-// For user to Update GPA 
+/**
+ * Updates a student's GPA for a specific course.
+ * 
+ * @scope public
+ * @param {string} req.params.studentId - ID of the student
+ * @param {string} req.params.courseId - ID of the course to update
+ * @param {number} req.body.GPA - New GPA value
+ * @returns {Object} Updated enrollment with a success message
+ */
 router.put('/:studentId/:courseId', async (req, res) => {
   try {
     const { studentId, courseId } = req.params;
@@ -81,7 +109,6 @@ router.put('/:studentId/:courseId', async (req, res) => {
       return res.status(404).json({ error: "Enrollment not found for this student" });
     }
 
-    //find course object
     const courseEntry = enrollment.courses.find(c => c.course.toString() === courseId);
     if (!courseEntry) {
       return res.status(404).json({ error: "Course not found in this student's enrollments" });
@@ -95,6 +122,6 @@ router.put('/:studentId/:courseId', async (req, res) => {
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
-});
+})
 
 export default router;

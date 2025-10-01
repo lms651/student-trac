@@ -142,12 +142,11 @@ tr:nth-child(even) {
 }
 
 th {
-  background-color: rgb(85, 84, 84);
+  background-color: #3a3a39;
   color: white;
   font-weight: 400;
 }
 
-/* Extra small devices */
 @media (max-width: 480px) {
   th, td {
     padding: 6px;

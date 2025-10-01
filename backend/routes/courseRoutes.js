@@ -3,7 +3,12 @@ import Course from "../models/Course.js"
 
 const router = express.Router();
 
-// returns all enabled coureses
+/**
+ * Retrieves all enabled courses.
+ * 
+ * @scope public
+ * @returns {Array} List of enabled courses
+ */
 router.get('/', async (req, res) => {
     try {
         const allCourses = await Course.find({ enabled: true });
@@ -13,8 +18,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-// option to add POST route for admin creating courses, but I will just do that in mongodb shell for now
-// because the user shouldn't have the ability to create courses
+//later add POST for admin role
 
 
 export default router;

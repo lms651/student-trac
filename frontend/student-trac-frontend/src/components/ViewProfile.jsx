@@ -12,10 +12,10 @@ export default function ViewProfile() {
 
 
   React.useEffect(() => {
-    // Fetch student profile
+    // Get student's profile
     const fetchProfile = async () => {
       try {
-        const profileRes = await fetch(`http://localhost:4000/students/${studentId}`);
+        const profileRes = await fetch(`${import.meta.env.VITE_API_URL}/students/${studentId}`);
         const data = await profileRes.json();
         setProfile(data);
       } catch (err) {
@@ -23,10 +23,10 @@ export default function ViewProfile() {
       }
     };
 
-    // Fetch enrollments
+    // Get student's enrollments
     const fetchEnrollments = async () => {
       try {
-        const enrollmentRes = await fetch(`http://localhost:4000/enrollments/${studentId}`);
+        const enrollmentRes = await fetch(`${import.meta.env.VITE_API_URL}/enrollments/${studentId}`);
         if (enrollmentRes.ok) {
           const data = await enrollmentRes.json();
           setEnrollments(data);
@@ -42,13 +42,13 @@ export default function ViewProfile() {
 
   const handleDelete = async () => {
     if (!deleteWarned) {
-      toastr.warning("Click Delete Profile again to confirm deletion", "Warning");
+      toastr.warning("Click 'Delete Profile' again to confirm deletion", "Warning");
       setDeleteWarned(true);
       return;
     }
 
     try {
-      const res = await fetch(`http://localhost:4000/students/${studentId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/students/${studentId}`, {
         method: "DELETE",
       });
 

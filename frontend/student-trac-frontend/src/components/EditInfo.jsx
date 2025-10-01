@@ -10,23 +10,25 @@ export default function EditInfo() {
     const [enrollments, setEnrollments] = React.useState([]);
 
     React.useEffect(() => {
+        // Get student's profile
         const fetchProfile = async () => {
             try {
-            const res = await fetch(`http://localhost:4000/students/${studentId}`);
-            const data = await res.json();
-            setProfile(data);
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/students/${studentId}`);
+                const data = await res.json();
+                setProfile(data);
             } catch (err) {
-            console.error(err);
+                console.error(err);
             }
         };
 
+        // Get student's enrollments
         const fetchEnrollments = async () => {
             try {
-            const res = await fetch(`http://localhost:4000/enrollments/${studentId}`);
-            if (res.ok) {
-                const data = await res.json();
-                setEnrollments(data);
-            }
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/enrollments/${studentId}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    setEnrollments(data);
+                }
             } catch (err) {
             console.error(err);
             }
@@ -43,11 +45,11 @@ export default function EditInfo() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const res = await fetch(`http://localhost:4000/students/${studentId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(profile)
-            });
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/students/${studentId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(profile)
+                });
 
             if (!res.ok) throw new Error("Failed to update profile");
         
@@ -61,13 +63,13 @@ export default function EditInfo() {
 
     const handleDeleteCourse = async (courseId) => {
         try {
-            const res = await fetch(`http://localhost:4000/enrollments/${studentId}/${courseId}`, {
-            method: "DELETE",
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/enrollments/${studentId}/${courseId}`, {
+                method: "DELETE",
             });
 
             if (!res.ok) throw new Error("Failed to delete course");
 
-            // Remove the course from state to update the table immediately
+            // Remove the course and update table
             setEnrollments(enrollments.filter(enrollment => enrollment.course._id !== courseId));
             toastr.success("Course removed", "Success");
         } catch (err) {
@@ -75,25 +77,24 @@ export default function EditInfo() {
         }
     }
 
-  // Update GPA locally and on backend
-  const handleGPAChange = (enrollmentId, newGPA) => {
-    setEnrollments((prev) =>
-      prev.map((e) => (e._id === enrollmentId ? { ...e, GPA: newGPA } : e))
-    );
-  };
+    const handleGPAChange = (enrollmentId, newGPA) => {
+        setEnrollments((prev) =>
+            prev.map((e) => (e._id === enrollmentId ? { ...e, GPA: newGPA } : e))
+        );
+    }
 
   const handleGPAUpdate = async (enrollment) => {
     try {
-      await fetch(`http://localhost:4000/enrollments/${studentId}/${enrollment.course._id}`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/enrollments/${studentId}/${enrollment.course._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ GPA: enrollment.GPA }),
       });
-      toastr.success("GPA updated!", "Success");
+        toastr.success("GPA updated!", "Success");
     } catch (err) {
-      toastr.error("Failed to update GPA.", "Error");
+        toastr.error("Failed to update GPA.", "Error");
     }
-  };
+  }
 
 
     return (
@@ -160,7 +161,7 @@ export default function EditInfo() {
                 )}
                 </div>
                 <button type="button" onClick={()=> navigate(`/profile/${studentId}/courses`)}>Add Courses</button>
-                <button type="button" onClick={() => navigate(`/profile/${studentId}`)}>Cancel</button>
+                <button type="button" onClick={() => navigate(`/profile/${studentId}`)}>Back</button>
         </div> 
     )
 }
