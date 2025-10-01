@@ -69,4 +69,32 @@ router.delete('/:studentId/:courseId', async (req, res) => {
     }
 })
 
+// For user to Update GPA 
+router.put('/:studentId/:courseId', async (req, res) => {
+  try {
+    const { studentId, courseId } = req.params;
+    const { GPA } = req.body;
+
+    const enrollment = await Enrollment.findOne({ "courses.student": studentId });
+
+    if (!enrollment) {
+      return res.status(404).json({ error: "Enrollment not found for this student" });
+    }
+
+    //find course object
+    const courseEntry = enrollment.courses.find(c => c.course.toString() === courseId);
+    if (!courseEntry) {
+      return res.status(404).json({ error: "Course not found in this student's enrollments" });
+    }
+
+    if (GPA !== undefined) courseEntry.GPA = GPA;
+
+    await enrollment.save();
+
+    res.status(200).json({ message: "Enrollment updated successfully", enrollment });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 export default router;

@@ -75,6 +75,27 @@ export default function EditInfo() {
         }
     }
 
+  // Update GPA locally and on backend
+  const handleGPAChange = (enrollmentId, newGPA) => {
+    setEnrollments((prev) =>
+      prev.map((e) => (e._id === enrollmentId ? { ...e, GPA: newGPA } : e))
+    );
+  };
+
+  const handleGPAUpdate = async (enrollment) => {
+    try {
+      await fetch(`http://localhost:4000/enrollments/${studentId}/${enrollment.course._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ GPA: enrollment.GPA }),
+      });
+      toastr.success("GPA updated!", "Success");
+    } catch (err) {
+      toastr.error("Failed to update GPA.", "Error");
+    }
+  };
+
+
     return (
         <div className="edit-info-section">
             <h1>Edit Information</h1>
@@ -95,39 +116,49 @@ export default function EditInfo() {
             </form>
                 
             <div id="edit-my-courses-table">
-            <b>Edit Enrollments</b>
-            {enrollments.length === 0 ? (
-                <p>No enrollments yet</p>
-            ) : (
-                <table>
-                <thead>
-                    <tr>
-                    <th>Course ID</th>
-                    <th>Name</th>
-                    <th>Semester</th>
-                    <th>Year</th>
-                    <th>GPA</th>
-                    <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {enrollments.map((enrollment) => (
-                    <tr key={enrollment._id}>
-                        <td>{enrollment.course.publicCourseId}</td>
-                        <td>{enrollment.course.courseName}</td>
-                        <td>{enrollment.course.semester}</td>
-                        <td>{enrollment.course.year}</td>
-                        <td>{enrollment.GPA}</td>
-                        <td><button style= {{ backgroundColor: "#c71616ff", color: "white", cursor: "pointer" }}
-                        onClick={() => handleDeleteCourse(enrollment.course._id)}
-                        >X</button>
-                        </td>
-                    </tr>
-                    ))}
-                </tbody>
-                </table>
-            )}
-            </div>
+                <b>Edit Enrollments</b>
+                {enrollments.length === 0 ? (
+                    <p>No enrollments yet</p>
+                ) : (
+                    <table>
+                    <thead>
+                        <tr>
+                        <th>Course ID</th>
+                        <th>Name</th>
+                        <th>Semester</th>
+                        <th>Year</th>
+                        <th>GPA</th>
+                        <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {enrollments.map((enrollment) => (
+                        <tr key={enrollment._id}>
+                            <td>{enrollment.course.publicCourseId}</td>
+                            <td>{enrollment.course.courseName}</td>
+                            <td>{enrollment.course.semester}</td>
+                            <td>{enrollment.course.year}</td>
+                            <td>              
+                                <input
+                                type="number"
+                                step="0.01"
+                                value={enrollment.GPA}
+                                onChange={(e) => handleGPAChange(enrollment._id, e.target.value)}
+                                onBlur={() => handleGPAUpdate(enrollment)}
+                                style={{ width: "30px", textAlign: "center" }}
+
+                                />
+                            </td>                            
+                            <td><button style= {{ backgroundColor: "#c71616ff", color: "white", cursor: "pointer" }}
+                            onClick={() => handleDeleteCourse(enrollment.course._id)}
+                            >X</button>
+                            </td>
+                        </tr>
+                        ))}
+                    </tbody>
+                    </table>
+                )}
+                </div>
                 <button type="button" onClick={()=> navigate(`/profile/${studentId}/courses`)}>Add Courses</button>
                 <button type="button" onClick={() => navigate(`/profile/${studentId}`)}>Cancel</button>
         </div> 
