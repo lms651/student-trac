@@ -64,39 +64,40 @@ export default function ViewProfile() {
 
     return (
         <div className="view-profile-section">
-            <h1>My Profile</h1>
-            <div><b>My Information:</b>
+            <h1>Student Profile</h1>
+            <div><b>Student Name:</b>
                 <p>{profile ? `${profile.firstName} ${profile.middleName} ${profile.lastName}` : "Loading..."}</p>
-                <p><b>Student ID:</b> {profile ? profile.publicStudentId : "Loading..."}</p>
+                <p><b>Student ID:</b></p>
+                <p>{profile ? profile.publicStudentId : "Loading..."}</p>
             </div>
-            <div className="my-course-display"><b>My Enrollments:</b>
-        {enrollments.length === 0 ? (
-          <p>No enrollments yet</p>
-            ) : (
-            <table>
-                <thead>
-                <tr>
-                    <th>Course ID</th>
-                    <th>Course Name</th>
-                    <th>Semester</th>
-                    <th>Year</th>
-                    <th>GPA</th>
-                </tr>
-                </thead>
-                <tbody>
-                {enrollments.map((e) => (
-                    <tr key={e._id}>
-                    <td>{e.course.publicCourseId}</td>
-                    <td>{e.course.courseName}</td>
-                    <td>{e.course.semester}</td>
-                    <td>{e.course.year}</td>
-                    <td>{e.GPA}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-            )}
-        </div>
+            <div className="my-course-display"><b>Student Enrollments:</b>
+              {enrollments.length === 0 ? (
+                <p>No enrollments yet</p>
+                  ) : (
+                  <table>
+                      <thead>
+                      <tr>
+                          <th>Course ID</th>
+                          <th>Course Name</th>
+                          <th>Semester</th>
+                          <th>Year</th>
+                          <th>GPA</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {enrollments.map((e) => (
+                          <tr key={e._id}>
+                          <td>{e.course.publicCourseId}</td>
+                          <td>{e.course.courseName}</td>
+                          <td>{e.course.semester}</td>
+                          <td>{e.course.year}</td>
+                          <td>{e.GPA}</td>
+                          </tr>
+                      ))}
+                      </tbody>
+                  </table>
+                  )}
+              </div>
                 <button type="button" onClick={() => navigate(`/edit/${studentId}`)}>Edit Profile</button> 
                 <button type="button" onClick={handleDelete}>Delete Profile</button> 
         </div> 

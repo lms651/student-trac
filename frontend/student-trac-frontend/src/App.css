@@ -31,33 +31,33 @@ h1 {
 }
 
 main {
-  display: flex;           /* enables flexbox */
-  justify-content: center; /* horizontal centering */
+  display: flex;           
+  justify-content: center; 
   flex-direction: column;
-  align-items: center;     /* vertical centering */
-  text-align: center;      /* optional, centers text inside elements */
+  align-items: center;     
+  text-align: center;      
 }
 
 .create-profile-section form {
   display: flex;
   flex-direction: column;
-  align-items: center;  /* keeps labels/inputs centered */
-  gap: 15px;            /* space between form fields */
+  align-items: center;  
+  gap: 15px;            
   margin-bottom: 10px;
 }
 
 .create-profile-section input,
 .create-profile-section select {
-  width: 250px;         /* optional, make inputs uniform */
+  width: 250px;         
   padding: 8px;
 }
 
 .create-profile-section {
-  display: flex;           /* enables flexbox */
-  justify-content: center; /* horizontal centering */
+  display: flex;           
+  justify-content: center; 
   flex-direction: column;
-  align-items: center;     /* vertical centering */
-  text-align: center;      /* optional, centers text inside elements */
+  align-items: center;    
+  text-align: center;      
 }
 
 .view-profile-section {
@@ -72,24 +72,24 @@ main {
 .edit-info-section form {
   display: flex;
   flex-direction: column;
-  align-items: center;  /* keeps labels/inputs centered */
-  gap: 15px;            /* space between form fields */
+  align-items: center;  
+  gap: 15px;            
   margin-bottom: 10px;
 }
 
 .edit-info-section input,
 .edit-info-section select {
-  width: 250px;         /* optional, make inputs uniform */
+  width: 250px;         
   padding: 8px;
 }
 
 .edit-info-section {
-  display: flex;           /* enables flexbox */
-  justify-content: center; /* horizontal centering */
+  display: flex;          
+  justify-content: center; 
   flex-direction: column;
-  align-items: center;     /* vertical centering */
-  text-align: center;      /* optional, centers text inside elements */
-  gap: 10px;
+  align-items: center;     
+  text-align: center;      
+  gap: 20px;
 }
 
 .view-courses-section {
@@ -117,7 +117,8 @@ main {
   width: 100%;            
   max-width: 100%;        
   overflow-x: auto;       
-  display: block;         
+  display: block;      
+  margin-top: 20px;   
 }
 
 .all-courses-section table {
@@ -152,4 +153,30 @@ th {
     padding: 6px;
     font-size: 12px;   
   }
+}
+
+button {
+  font-family: "PT Sans Caption", sans-serif;
+  border: 1px solid rgb(33, 33, 33);
+  background-color: rgb(16, 122, 87);
+  border-radius: 25%;
+  color: white;
+  padding: 8px 16px;                  
+  font-size: 1rem;                     
+  cursor: pointer;                     
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: rgb(20, 140, 100); 
+  transform: scale(1.05);             
+}
+
+.my-course-display {
+  display: flex;           
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;     
+  text-align: center;      
+  gap: 10px;
 }

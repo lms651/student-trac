@@ -36,12 +36,12 @@ export default function EditInfo() {
         fetchEnrollments();
     }, [studentId]);
 
-    const handleChange = (e) => {
-        setProfile({ ...profile, [e.target.name]: e.target.value });
+    const handleChange = (event) => {
+        setProfile({ ...profile, [event.target.name]: event.target.value });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         try {
             const res = await fetch(`http://localhost:4000/students/${studentId}`, {
             method: "PUT",
@@ -59,27 +59,43 @@ export default function EditInfo() {
         }
     }
 
+    const handleDeleteCourse = async (courseId) => {
+        try {
+            const res = await fetch(`http://localhost:4000/enrollments/${studentId}/${courseId}`, {
+            method: "DELETE",
+            });
+
+            if (!res.ok) throw new Error("Failed to delete course");
+
+            // Remove the course from state to update the table immediately
+            setEnrollments(enrollments.filter(enrollment => enrollment.course._id !== courseId));
+            toastr.success("Course removed", "Success");
+        } catch (err) {
+            toastr.error("Could not remove course", "Error");
+        }
+    }
+
     return (
         <div className="edit-info-section">
             <h1>Edit Information</h1>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="firstName">First Name:</label>
-                <input id="first-name" type="text" name="firstName" maxLength={255} placeholder="Sally" value={profile?.firstName || ""} onChange={handleChange} required/>
+                <input id="first-name" type="text" name="firstName" maxLength={255} value={profile?.firstName || ""} onChange={handleChange} required/>
 
                 <label htmlFor="middleName">Middle Name:</label>
-                <input id="middle-name" type="text" name="middleName" maxLength={255} placeholder="Marie" value={profile?.middleName || ""} onChange={handleChange}/>
+                <input id="middle-name" type="text" name="middleName" maxLength={255} value={profile?.middleName || ""} onChange={handleChange}/>
 
                 <label htmlFor="lastName">Last Name:</label>
-                <input id="last-name" type="text" name="lastName" maxLength={255} placeholder="Student" value={profile?.lastName || ""} onChange={handleChange} required/>
+                <input id="last-name" type="text" name="lastName" maxLength={255} value={profile?.lastName || ""} onChange={handleChange} required/>
 
                 <label htmlFor="publicStudentId">Student ID:</label>
-                <input id="student-name" type="text" name="publicStudentId" maxLength={8} placeholder="U7711624" value={profile?.publicStudentId || ""} onChange={handleChange} required/>
+                <input id="student-name" type="text" name="publicStudentId" maxLength={8} value={profile?.publicStudentId || ""} onChange={handleChange} required/>
 
                 <button type="submit">Save</button>
             </form>
                 
             <div id="edit-my-courses-table">
-            Edit My Enrollments
+            <b>Edit Enrollments</b>
             {enrollments.length === 0 ? (
                 <p>No enrollments yet</p>
             ) : (
@@ -95,14 +111,17 @@ export default function EditInfo() {
                     </tr>
                 </thead>
                 <tbody>
-                    {enrollments.map((e) => (
-                    <tr key={e._id}>
-                        <td>{e.course.publicCourseId}</td>
-                        <td>{e.course.courseName}</td>
-                        <td>{e.course.semester}</td>
-                        <td>{e.course.year}</td>
-                        <td>{e.GPA}</td>
-                        <td><button>X</button></td>
+                    {enrollments.map((enrollment) => (
+                    <tr key={enrollment._id}>
+                        <td>{enrollment.course.publicCourseId}</td>
+                        <td>{enrollment.course.courseName}</td>
+                        <td>{enrollment.course.semester}</td>
+                        <td>{enrollment.course.year}</td>
+                        <td>{enrollment.GPA}</td>
+                        <td><button style= {{ backgroundColor: "#c71616ff", color: "white", cursor: "pointer" }}
+                        onClick={() => handleDeleteCourse(enrollment.course._id)}
+                        >X</button>
+                        </td>
                     </tr>
                     ))}
                 </tbody>

@@ -76,7 +76,7 @@ export default function AllCourses() {
                 <td>{course.year}</td>
                 <td>
                   <button 
-                    style={{ backgroundColor: "green", color: "white" }} 
+                    style={{ backgroundColor: "green", color: "white", cursor: "pointer", fontSize: "20px"}} 
                     onClick={() => handleAddCourse(course._id)} 
                   >+</button>
                 </td>
@@ -87,6 +87,8 @@ export default function AllCourses() {
         
         </div>
       )}
+    <button type="button" onClick={() => navigate(`/profile/${studentId}`)}>Back</button>
+
     </div>
   )
 }
