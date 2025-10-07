@@ -47,6 +47,9 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         const profile = await StudentProfile.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        if (!profile || profile.isDeleted) {
+            return res.status(404).json({ error: 'Profile not found' });
+        }
         res.json(profile);
     } catch (err) {
     res.status(400).json({ error: err.message });

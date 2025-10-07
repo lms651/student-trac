@@ -109,7 +109,7 @@ router.put('/:studentId/:courseId', async (req, res) => {
       return res.status(404).json({ error: "Enrollment not found for this student" });
     }
 
-    const courseEntry = enrollment.courses.find(c => c.course.toString() === courseId);
+    const courseEntry = enrollment.courses.find(course => course.course.toString() === courseId);
     if (!courseEntry) {
       return res.status(404).json({ error: "Course not found in this student's enrollments" });
     }

@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import express from "express";
 import connectDB from "./config/db.js";
 import logger from "./config/logger.js";
@@ -5,6 +6,10 @@ import studentRoutes from './routes/studentProfileRoutes.js';
 import courseRoutes from './routes/courseRoutes.js';
 import enrollmentRoutes from './routes/enrollmentRoutes.js';
 import cors from "cors";
+
+dotenv.config();
+
+const PORT = process.env.PORT || 4000;
 
 const app = express();
 app.use(cors({ origin: "http://localhost:5173" })); 
@@ -19,38 +24,7 @@ app.use('/enrollments', enrollmentRoutes);
 
 
 app.get("/", (req, res) => {
-  res.send("API is running woooo");
+  res.send("API is running!");
 })
 
-app.listen(4000, () => logger.info("Server running on http://localhost:4000"));
-
-// import express from "express";
-// import connectDB from "./config/db.js";
-// import logger from "./config/logger.js";
-// import studentRoutes from './routes/studentProfileRoutes.js';
-// import courseRoutes from './routes/courseRoutes.js';
-// import enrollmentRoutes from './routes/enrollmentRoutes.js';
-// import cors from "cors";
-// import dotenv from "dotenv";
-
-// dotenv.config();
-// const PORT = process.env.PORT || 4000;
-
-
-// const app = express();
-// app.use(cors({ origin: "http://localhost:5173" })); 
-// app.use(express.json());
-
-// // Connect to MongoDB
-// connectDB();
-
-// app.use('/students', studentRoutes);
-// app.use('/courses', courseRoutes);
-// app.use('/enrollments', enrollmentRoutes);
-
-
-// app.get("/", (req, res) => {
-//   res.send("API is running woooo");
-// })
-
-// app.listen(PORT, () => logger.info(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => logger.info(`Server running on http://localhost:${PORT}`));
